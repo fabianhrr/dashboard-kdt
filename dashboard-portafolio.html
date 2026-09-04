@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel Ejecutivo de Portafolio de Proyectos</title>
+<style>
+  :root{
+    --ink:#101826;
+    --ink-soft:#3c4658;
+    --paper:#fbfbfa;
+    --panel:#ffffff;
+    --line:#e1e4ea;
+    --line-soft:#eef0f4;
+    --accent:#1f4b99;
+    --accent-soft:#e7edf8;
+    --good:#1c7a52;
+    --good-bg:#e5f4ec;
+    --warn:#b5680d;
+    --warn-bg:#fbeedd;
+    --bad:#b23a3a;
+    --bad-bg:#fbe7e7;
+    --neutral-bg:#eef0f4;
+    --radius:3px;
+    --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    --sans: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:var(--sans);
+    background:var(--paper);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    font-size:14px;
+    line-height:1.45;
+  }
+  .app{max-width:1180px;margin:0 auto;padding:28px 24px 64px;}
+
+  /* Header */
+  .hdr{
+    display:flex;justify-content:space-between;align-items:flex-end;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:16px;margin-bottom:20px;gap:24px;flex-wrap:wrap;
+  }
+  .hdr h1{
+    margin:0 0 6px;font-size:22px;font-weight:600;letter-spacing:-0.01em;color:var(--ink);
+  }
+  .hdr p{margin:0;color:var(--ink-soft);max-width:640px;font-size:13px;}
+  .hdr-meta{text-align:right;font-size:12px;color:var(--ink-soft);}
+  .hdr-meta .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--good);margin-right:6px;}
+  .refresh-btn{
+    margin-top:8px;background:var(--panel);border:1px solid var(--line);color:var(--ink);
+    padding:6px 12px;border-radius:var(--radius);font-size:12.5px;cursor:pointer;font-family:var(--sans);
+  }
+  .refresh-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+  /* Filters */
+  .filters{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;margin-bottom:20px;
+  }
+  .filters-title{font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin:0 0 12px;font-weight:600;}
+  .filters-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px 16px;}
+  @media(max-width:820px){.filters-grid{grid-template-columns:repeat(2,1fr);}}
+  .field label{display:block;font-size:11.5px;color:var(--ink-soft);margin-bottom:4px;}
+  .field select{
+    width:100%;padding:7px 8px;border:1px solid var(--line);border-radius:var(--radius);
+    background:var(--paper);font-family:var(--sans);font-size:13px;color:var(--ink);
+  }
+  .field select:focus{outline:2px solid var(--accent);outline-offset:1px;}
+  .filters-actions{margin-top:14px;display:flex;gap:10px;align-items:center;}
+  .reset-btn{
+    background:var(--accent);color:#fff;border:none;padding:8px 14px;border-radius:var(--radius);
+    font-size:12.5px;cursor:pointer;font-family:var(--sans);font-weight:600;
+  }
+  .reset-btn:hover{background:#173a78;}
+  .filter-count{font-size:12px;color:var(--ink-soft);}
+
+  /* KPI row */
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px;}
+  @media(max-width:820px){.kpis{grid-template-columns:repeat(2,1fr);}}
+  .kpi{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:14px 16px;border-top:3px solid var(--ink);
+  }
+  .kpi.-good{border-top-color:var(--good);}
+  .kpi.-warn{border-top-color:var(--warn);}
+  .kpi.-bad{border-top-color:var(--bad);}
+  .kpi .num{font-family:var(--mono);font-size:26px;font-weight:600;font-variant-numeric:tabular-nums;}
+  .kpi .lbl{font-size:12px;color:var(--ink-soft);margin-top:2px;}
+
+  /* Two-column panels */
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+  @media(max-width:820px){.row2{grid-template-columns:1fr;}}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;}
+  .panel h2{font-size:13.5px;margin:0 0 14px;font-weight:600;color:var(--ink);}
+
+  .bar-row{display:grid;grid-template-columns:90px 1fr 28px;align-items:center;gap:10px;margin-bottom:10px;}
+  .bar-row:last-child{margin-bottom:0;}
+  .bar-row .name{font-size:12.5px;color:var(--ink-soft);}
+  .bar-track{background:var(--neutral-bg);border-radius:2px;height:10px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:2px;transition:width .3s ease;}
+  .bar-fill.-good{background:var(--good);}
+  .bar-fill.-warn{background:var(--warn);}
+  .bar-fill.-bad{background:var(--bad);}
+  .bar-row .count{font-family:var(--mono);font-size:12.5px;text-align:right;font-variant-numeric:tabular-nums;}
+  .budget-summary{margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft);font-size:12.5px;color:var(--ink-soft);}
+  .budget-summary strong{color:var(--ink);font-family:var(--mono);font-weight:600;}
+
+  /* Tables */
+  table{width:100%;border-collapse:collapse;}
+  th{
+    text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.03em;
+    color:var(--ink-soft);font-weight:600;padding:0 10px 8px;border-bottom:1px solid var(--line);
+  }
+  td{padding:9px 10px;border-bottom:1px solid var(--line-soft);font-size:13px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  .badge{
+    display:inline-block;padding:2px 8px;border-radius:12px;font-size:11.5px;font-weight:600;white-space:nowrap;
+  }
+  .badge.-good{background:var(--good-bg);color:var(--good);}
+  .badge.-warn{background:var(--warn-bg);color:var(--warn);}
+  .badge.-bad{background:var(--bad-bg);color:var(--bad);}
+  .badge.-neutral{background:var(--neutral-bg);color:var(--ink-soft);}
+  .empty-row td{text-align:center;color:var(--ink-soft);padding:24px 10px;font-size:13px;}
+
+  .table-scroll{max-height:280px;overflow-y:auto;}
+  .table-scroll::-webkit-scrollbar{width:8px;}
+  .table-scroll::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px;}
+
+  footer{margin-top:24px;font-size:11.5px;color:var(--ink-soft);text-align:center;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="hdr">
+    <div>
+      <h1>Panel Ejecutivo de Portafolio de Proyectos</h1>
+      <p>Estado de salud, hitos, riesgos y presupuesto en vivo. Usa los filtros para sincronizar todos los indicadores, gráficos y tablas con los datos del portafolio.</p>
+    </div>
+    <div class="hdr-meta">
+      <div><span class="dot"></span><span id="loadedAt">Cargado --:--:--</span></div>
+      <button class="refresh-btn" id="refreshBtn" type="button">↻ Actualizar</button>
+    </div>
+  </div>
+
+  <div class="filters">
+    <p class="filters-title">Portafolio en vivo</p>
+    <div class="filters-grid">
+      <div class="field">
+        <label for="f-dept">Departamento</label>
+        <select id="f-dept"></select>
+      </div>
+      <div class="field">
+        <label for="f-owner">Responsable</label>
+        <select id="f-owner"></select>
+      </div>
+      <div class="field">
+        <label for="f-health">Salud</label>
+        <select id="f-health"></select>
+      </div>
+      <div class="field">
+        <label for="f-status">Estado</label>
+        <select id="f-status"></select>
+      </div>
+      <div class="field">
+        <label for="f-phase">Fase</label>
+        <select id="f-phase"></select>
+      </div>
+      <div class="field">
+        <label for="f-priority">Prioridad</label>
+        <select id="f-priority"></select>
+      </div>
+      <div class="field">
+        <label for="f-budget">Estado presupuestario</label>
+        <select id="f-budget"></select>
+      </div>
+      <div class="field">
+        <label for="f-risk">Riesgos</label>
+        <select id="f-risk"></select>
+      </div>
+    </div>
+    <div class="filters-actions">
+      <button class="reset-btn" id="resetBtn" type="button">Restablecer filtros</button>
+      <span class="filter-count" id="filterCount"></span>
+    </div>
+  </div>
+
+  <div class="kpis" id="kpiRow"></div>
+
+  <div class="row2">
+    <div class="panel">
+      <h2>Salud de proyectos</h2>
+      <div id="healthBars"></div>
+    </div>
+    <div class="panel">
+      <h2>Estado presupuestario</h2>
+      <div id="budgetBars"></div>
+      <div class="budget-summary" id="budgetSummary"></div>
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="panel">
+      <h2>Próximos hitos</h2>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Proyecto</th><th>Hito</th><th>Vence</th><th>Salud</th></tr></thead>
+          <tbody id="milestonesBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Foco de riesgos</h2>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Proyecto</th><th>Responsable</th><th>Riesgos</th><th>Estado</th></tr></thead>
+          <tbody id="risksBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer>Datos de demostración · edita el arreglo PROJECTS en el HTML para conectar tus propios datos.</footer>
+</div>
+
+<script>
+/* ---------- 1. DATOS (reemplaza este arreglo con tus datos reales) ---------- */
+const PROJECTS = [
+  {name:"Modernización Póliza de Gastos", dept:"Finanzas", owner:"Laura Rogers", health:"En riesgo", status:"Activo", phase:"Ejecución", priority:"Alta", budget:"Dentro de presupuesto", allocated:180000, spent:96000, risks:3,
+    milestones:[{m:"Archivar documentos finales", due:"2026-03-31", health:"En curso"}]},
+  {name:"Actualización Panel Ejecutivo", dept:"TI", owner:"Marco Díaz", health:"En curso", status:"Activo", phase:"Cierre", priority:"Media", budget:"Dentro de presupuesto", allocated:65000, spent:58000, risks:1,
+    milestones:[{m:"Recopilar retroalimentación post-lanzamiento", due:"2026-04-15", health:"En curso"}]},
+  {name:"Limpieza Proveedores Cuentas por Pagar", dept:"Finanzas", owner:"Laura Rogers", health:"En curso", status:"Activo", phase:"Cierre", priority:"Baja", budget:"Dentro de presupuesto", allocated:40000, spent:31000, risks:0,
+    milestones:[{m:"Cerrar acciones de auditoría pendientes", due:"2026-04-30", health:"En curso"}]},
+  {name:"Mejora de Seguridad en Almacén", dept:"Operaciones", owner:"Laura Rogers", health:"Fuera de curso", status:"Activo", phase:"Ejecución", priority:"Alta", budget:"Dentro de presupuesto", allocated:220000, spent:140000, risks:5, milestones:[]},
+  {name:"Automatización de Cierre Financiero", dept:"Finanzas", owner:"Laura Rogers", health:"En riesgo", status:"Activo", phase:"Ejecución", priority:"Alta", budget:"Dentro de presupuesto", allocated:150000, spent:90000, risks:4, milestones:[]},
+  {name:"Planificación de Mudanza de Instalaciones", dept:"Operaciones", owner:"Laura Rogers", health:"En riesgo", status:"Activo", phase:"Planificación", priority:"Media", budget:"Dentro de presupuesto", allocated:95000, spent:20000, risks:4, milestones:[]},
+  {name:"Modelo de Puntuación de Leads", dept:"Ventas", owner:"Laura Rogers", health:"En riesgo", status:"Activo", phase:"Ejecución", priority:"Alta", budget:"Dentro de presupuesto", allocated:110000, spent:70000, risks:3, milestones:[]},
+  {name:"Migración de CRM", dept:"Ventas", owner:"Ana Torres", health:"En curso", status:"Activo", phase:"Ejecución", priority:"Alta", budget:"Dentro de presupuesto", allocated:250000, spent:130000, risks:2, milestones:[]},
+  {name:"Portal de Autoservicio de Clientes", dept:"TI", owner:"Marco Díaz", health:"En curso", status:"Activo", phase:"Planificación", priority:"Media", budget:"Dentro de presupuesto", allocated:180000, spent:20000, risks:1, milestones:[]},
+  {name:"Rediseño de Onboarding de RR.HH.", dept:"RR.HH.", owner:"Sofía Herrera", health:"En curso", status:"Activo", phase:"Ejecución", priority:"Media", budget:"Dentro de presupuesto", allocated:60000, spent:35000, risks:1, milestones:[]},
+  {name:"Plan de Capacitación en Cumplimiento", dept:"RR.HH.", owner:"Sofía Herrera", health:"En curso", status:"Activo", phase:"Planificación", priority:"Baja", budget:"Dentro de presupuesto", allocated:30000, spent:5000, risks:0, milestones:[]},
+  {name:"Renovación de Flota de Vehículos", dept:"Operaciones", owner:"Diego Pardo", health:"En curso", status:"En espera", phase:"Planificación", priority:"Baja", budget:"Dentro de presupuesto", allocated:400000, spent:0, risks:0, milestones:[]},
+  {name:"Rediseño Sitio Web Corporativo", dept:"Marketing", owner:"Julia Núñez", health:"En curso", status:"Activo", phase:"Ejecución", priority:"Media", budget:"Dentro de presupuesto", allocated:85000, spent:60000, risks:2, milestones:[]},
+  {name:"Programa de Fidelización de Clientes", dept:"Marketing", owner:"Julia Núñez", health:"En curso", status:"Activo", phase:"Ejecución", priority:"Media", budget:"Dentro de presupuesto", allocated:70000, spent:40000, risks:1, milestones:[]},
+  {name:"Auditoría de Ciberseguridad", dept:"TI", owner:"Marco Díaz", health:"Fuera de curso", status:"Activo", phase:"Ejecución", priority:"Alta", budget:"Dentro de presupuesto", allocated:120000, spent:100000, risks:5, milestones:[]},
+  {name:"Optimización de Cadena de Suministro", dept:"Operaciones", owner:"Diego Pardo", health:"En curso", status:"Activo", phase:"Ejecución", priority:"Media", budget:"Dentro de presupuesto", allocated:200000, spent:110000, risks:2, milestones:[]},
+  {name:"Consolidación de Centros de Datos", dept:"TI", owner:"Marco Díaz", health:"En curso", status:"Activo", phase:"Cierre", priority:"Alta", budget:"Dentro de presupuesto", allocated:300000, spent:280000, risks:1, milestones:[]},
+  {name:"Programa de Desarrollo de Liderazgo", dept:"RR.HH.", owner:"Sofía Herrera", health:"En curso", status:"Activo", phase:"Ejecución", priority:"Baja", budget:"Dentro de presupuesto", allocated:45000, spent:22000, risks:0, milestones:[]},
+  {name:"Expansión Regional de Ventas", dept:"Ventas", owner:"Ana Torres", health:"En curso", status:"Activo", phase:"Planificación", priority:"Alta", budget:"Dentro de presupuesto", allocated:500000, spent:60000, risks:2, milestones:[]},
+  {name:"Reestructuración de Precios", dept:"Finanzas", owner:"Laura Rogers", health:"En curso", status:"Completado", phase:"Cierre", priority:"Media", budget:"Dentro de presupuesto", allocated:20000, spent:19000, risks:0, milestones:[]},
+];
+
+/* ---------- 2. ESTADO Y UTILIDADES ---------- */
+const state = {dept:"Todos", owner:"Todos", health:"Todas", status:"Todos", phase:"Todas", priority:"Todas", budget:"Todos", risk:"Todos"};
+
+const HEALTH_CLASS = {"En curso":"good", "En riesgo":"warn", "Fuera de curso":"bad"};
+const STATUS_CLASS  = {"Bloqueado":"bad", "En curso":"warn", "Al día":"good"};
+
+function uniqueValues(key){ return Array.from(new Set(PROJECTS.map(p => p[key]))).sort(); }
+
+function populateSelect(id, values, allLabel){
+  const el = document.getElementById(id);
+  el.innerHTML = "";
+  const optAll = document.createElement("option");
+  optAll.value = allLabel; optAll.textContent = allLabel;
+  el.appendChild(optAll);
+  values.forEach(v => {
+    const o = document.createElement("option");
+    o.value = v; o.textContent = v;
+    el.appendChild(o);
+  });
+}
+
+function riskBucket(n){
+  if(n === 0) return "Sin riesgos";
+  if(n <= 2) return "1-2 riesgos";
+  return "3+ riesgos";
+}
+
+function matchesRisk(n, bucket){
+  if(bucket === "Todos") return true;
+  return riskBucket(n) === bucket;
+}
+
+function filteredProjects(){
+  return PROJECTS.filter(p =>
+    (state.dept === "Todos" || p.dept === state.dept) &&
+    (state.owner === "Todos" || p.owner === state.owner) &&
+    (state.health === "Todas" || p.health === state.health) &&
+    (state.status === "Todos" || p.status === state.status) &&
+    (state.phase === "Todas" || p.phase === state.phase) &&
+    (state.priority === "Todas" || p.priority === state.priority) &&
+    (state.budget === "Todos" || p.budget === state.budget) &&
+    matchesRisk(p.risks, state.risk)
+  );
+}
+
+function fmtMoney(n){
+  return "$" + n.toLocaleString("es-AR");
+}
+
+function fmtDate(iso){
+  const d = new Date(iso + "T00:00:00");
+  return d.toLocaleDateString("es-AR", {day:"2-digit", month:"2-digit", year:"numeric"});
+}
+
+/* ---------- 3. RENDER ---------- */
+function render(){
+  const data = filteredProjects();
+
+  // KPIs
+  const total = data.length;
+  const atRisk = data.filter(p => p.health !== "En curso").length;
+  const openRisks = data.reduce((a,p) => a + p.risks, 0);
+  const overBudget = data.filter(p => p.budget === "Sobre presupuesto").length;
+  const today = new Date("2026-09-04");
+  const in30 = new Date(today.getTime() + 30*24*60*60*1000);
+  const milestonesSoon = data.reduce((a,p) => a + p.milestones.filter(m => {
+    const d = new Date(m.due + "T00:00:00");
+    return d >= today && d <= in30;
+  }).length, 0);
+
+  const kpiRow = document.getElementById("kpiRow");
+  kpiRow.innerHTML = `
+    <div class="kpi"><div class="num">${total}</div><div class="lbl">Proyectos en alcance</div></div>
+    <div class="kpi -warn"><div class="num">${atRisk}</div><div class="lbl">En riesgo / bloqueados</div></div>
+    <div class="kpi -warn"><div class="num">${openRisks}</div><div class="lbl">Riesgos abiertos</div></div>
+    <div class="kpi ${overBudget > 0 ? '-bad' : '-good'}"><div class="num">${overBudget}</div><div class="lbl">Sobre presupuesto</div></div>
+    <div class="kpi"><div class="num">${milestonesSoon}</div><div class="lbl">Hitos en 30 días</div></div>
+  `;
+
+  // Health bars
+  const healthCounts = {"En curso":0, "En riesgo":0, "Fuera de curso":0};
+  data.forEach(p => healthCounts[p.health]++);
+  const maxHealth = Math.max(1, ...Object.values(healthCounts));
+  const healthBars = document.getElementById("healthBars");
+  healthBars.innerHTML = ["En curso","En riesgo","Fuera de curso"].map(h => `
+    <div class="bar-row">
+      <div class="name">${h}</div>
+      <div class="bar-track"><div class="bar-fill -${HEALTH_CLASS[h]}" style="width:${(healthCounts[h]/maxHealth*100)}%"></div></div>
+      <div class="count">${healthCounts[h]}</div>
+    </div>
+  `).join("");
+
+  // Budget bars
+  const budgetCounts = {"Dentro de presupuesto":0, "Sobre presupuesto":0, "Sin presupuesto":0};
+  data.forEach(p => { budgetCounts[p.budget] = (budgetCounts[p.budget]||0) + 1; });
+  const maxBudget = Math.max(1, ...Object.values(budgetCounts));
+  const budgetBars = document.getElementById("budgetBars");
+  budgetBars.innerHTML = Object.keys(budgetCounts).map(b => `
+    <div class="bar-row">
+      <div class="name">${b}</div>
+      <div class="bar-track"><div class="bar-fill ${b === 'Sobre presupuesto' ? '-bad' : '-good'}" style="width:${(budgetCounts[b]/maxBudget*100)}%"></div></div>
+      <div class="count">${budgetCounts[b]}</div>
+    </div>
+  `).join("");
+  const totalAllocated = data.reduce((a,p) => a + p.allocated, 0);
+  const totalSpent = data.reduce((a,p) => a + p.spent, 0);
+  document.getElementById("budgetSummary").innerHTML =
+    `Presupuesto <strong>${fmtMoney(totalAllocated)}</strong> · Gastado <strong>${fmtMoney(totalSpent)}</strong>`;
+
+  // Milestones table
+  const allMilestones = [];
+  data.forEach(p => p.milestones.forEach(m => allMilestones.push({project:p.name, ...m})));
+  allMilestones.sort((a,b) => new Date(a.due) - new Date(b.due));
+  const msBody = document.getElementById("milestonesBody");
+  msBody.innerHTML = allMilestones.length ? allMilestones.map(m => `
+    <tr>
+      <td>${m.project}</td>
+      <td>${m.m}</td>
+      <td>${fmtDate(m.due)}</td>
+      <td><span class="badge -${HEALTH_CLASS[m.health] || 'neutral'}">${m.health}</span></td>
+    </tr>
+  `).join("") : `<tr class="empty-row"><td colspan="4">No hay hitos para los filtros seleccionados.</td></tr>`;
+
+  // Risks table (top projects by open risk count)
+  const risky = data.filter(p => p.risks > 0).sort((a,b) => b.risks - a.risks).slice(0, 8);
+  const rBody = document.getElementById("risksBody");
+  rBody.innerHTML = risky.length ? risky.map(p => {
+    const st = p.health === "Fuera de curso" ? "Bloqueado" : "En curso";
+    return `
+    <tr>
+      <td>${p.name}</td>
+      <td>${p.owner}</td>
+      <td>${p.risks}</td>
+      <td><span class="badge -${STATUS_CLASS[st]}">${st}</span></td>
+    </tr>`;
+  }).join("") : `<tr class="empty-row"><td colspan="4">No hay riesgos abiertos para los filtros seleccionados.</td></tr>`;
+
+  document.getElementById("filterCount").textContent = `Mostrando ${total} de ${PROJECTS.length} proyectos`;
+}
+
+/* ---------- 4. INICIALIZACIÓN DE FILTROS ---------- */
+function initFilters(){
+  populateSelect("f-dept", uniqueValues("dept"), "Todos");
+  populateSelect("f-owner", uniqueValues("owner"), "Todos");
+  populateSelect("f-health", ["En curso","En riesgo","Fuera de curso"], "Todas");
+  populateSelect("f-status", uniqueValues("status"), "Todos");
+  populateSelect("f-phase", uniqueValues("phase"), "Todas");
+  populateSelect("f-priority", ["Alta","Media","Baja"], "Todas");
+  populateSelect("f-budget", uniqueValues("budget"), "Todos");
+  populateSelect("f-risk", ["Sin riesgos","1-2 riesgos","3+ riesgos"], "Todos");
+
+  const map = {"f-dept":"dept","f-owner":"owner","f-health":"health","f-status":"status","f-phase":"phase","f-priority":"priority","f-budget":"budget","f-risk":"risk"};
+  Object.keys(map).forEach(id => {
+    document.getElementById(id).addEventListener("change", e => {
+      state[map[id]] = e.target.value;
+      render();
+    });
+  });
+
+  document.getElementById("resetBtn").addEventListener("click", () => {
+    Object.keys(map).forEach(id => { document.getElementById(id).value = document.getElementById(id).options[0].value; });
+    state.dept="Todos"; state.owner="Todos"; state.health="Todas"; state.status="Todos";
+    state.phase="Todas"; state.priority="Todas"; state.budget="Todos"; state.risk="Todos";
+    render();
+  });
+
+  document.getElementById("refreshBtn").addEventListener("click", () => {
+    stampTime();
+    render();
+  });
+}
+
+function stampTime(){
+  const now = new Date();
+  document.getElementById("loadedAt").textContent = "Cargado " + now.toLocaleTimeString("es-AR");
+}
+
+initFilters();
+stampTime();
+render();
+</script>
+</body>
+</html>
