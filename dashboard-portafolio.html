@@ -3,560 +3,495 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Panel Ejecutivo — Portafolio 3D</title>
+<title>Panel Ejecutivo de Soporte — MK HelpDesk</title>
 <style>
   :root{
-    --bg:#0a0e1a;
-    --bg-deep:#060810;
-    --panel:rgba(255,255,255,0.045);
-    --panel-border:rgba(255,255,255,0.09);
-    --text:#f2f4f8;
-    --text-dim:#8991a8;
-    --text-faint:#5b6478;
-    --teal:#2fd6c2;
-    --teal-dim:rgba(47,214,194,0.16);
-    --amber:#f5a840;
-    --amber-dim:rgba(245,168,64,0.16);
-    --crit:#f4507a;
-    --crit-dim:rgba(244,80,122,0.16);
-    --indigo:#6d7bf7;
-    --radius-lg:20px;
-    --radius-md:14px;
+    --bg:#f3f5fa;
+    --panel:#ffffff;
+    --border:#e4e8f1;
+    --border-soft:#eef1f7;
+    --ink:#141a2b;
+    --ink-dim:#69718a;
+    --ink-faint:#9aa1b4;
+    --teal:#0f9c8a; --teal-bg:#e2f6f2;
+    --violet:#6f5bd6; --violet-bg:#ece9fb;
+    --coral:#e0435f; --coral-bg:#fdeaee;
+    --amber:#c98a1c; --amber-bg:#faf1de;
+    --indigo:#4353d6; --indigo-bg:#e9ecfb;
+    --radius-lg:18px;
+    --radius-md:12px;
     --sans:"Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
     --mono:"SFMono-Regular", Consolas, Menlo, monospace;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
-  body{
-    background:var(--bg-deep);
-    font-family:var(--sans);
-    color:var(--text);
-    -webkit-font-smoothing:antialiased;
-    display:flex;
-    justify-content:center;
-    padding:24px 12px;
-  }
-  .phone{
-    width:100%;
-    max-width:390px;
-    background:radial-gradient(120% 160% at 15% -10%, #101a33 0%, var(--bg) 45%, var(--bg-deep) 100%);
-    border-radius:34px;
-    border:1px solid rgba(255,255,255,0.06);
-    padding:18px 16px 90px;
-    position:relative;
-    min-height:80vh;
-    box-shadow:0 30px 80px rgba(0,0,0,0.5);
-  }
-
-  /* Status row */
-  .status{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--text-dim);margin-bottom:14px;}
-  .status .live{display:flex;align-items:center;gap:6px;}
-  .live-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal);}
-  .sync-btn{
-    display:flex;align-items:center;gap:6px;background:var(--panel);border:1px solid var(--panel-border);
-    color:var(--text-dim);font-size:11px;padding:5px 10px;border-radius:20px;cursor:pointer;font-family:var(--sans);
-  }
-  .sync-btn:hover{color:var(--teal);border-color:var(--teal);}
-  .sync-btn svg{width:12px;height:12px;transition:transform .5s ease;}
-  .sync-btn.-spinning svg{transform:rotate(360deg);}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:13.5px;-webkit-font-smoothing:antialiased;}
+  .app{max-width:1220px;margin:0 auto;padding:26px 22px 60px;}
 
   /* Header */
-  .hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
-  .hdr h1{font-size:19px;margin:0 0 4px;font-weight:600;display:flex;align-items:center;gap:8px;}
-  .pill-tag{
-    font-size:10.5px;background:var(--teal-dim);color:var(--teal);padding:2px 9px;border-radius:20px;font-weight:600;letter-spacing:.02em;
+  .status-row{display:flex;align-items:center;gap:10px;font-size:11.5px;color:var(--ink-dim);margin-bottom:10px;}
+  .live-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);display:inline-block;box-shadow:0 0 0 3px var(--teal-bg);}
+  .status-sep{color:var(--border);}
+  .hdr{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:20px;flex-wrap:wrap;}
+  .hdr h1{font-size:24px;margin:0 0 8px;font-weight:600;letter-spacing:-0.01em;max-width:520px;line-height:1.25;}
+  .hdr p{margin:0;color:var(--ink-dim);max-width:640px;font-size:13px;}
+  .hdr-actions{display:flex;gap:10px;flex-shrink:0;}
+  .btn{
+    display:flex;align-items:center;gap:7px;border-radius:10px;padding:9px 14px;font-size:12.5px;font-weight:600;
+    cursor:pointer;font-family:var(--sans);border:1px solid var(--border);background:var(--panel);color:var(--ink-dim);
   }
-  .hdr p{margin:0;font-size:12px;color:var(--text-dim);}
-  .icon-btn{
-    width:34px;height:34px;border-radius:12px;background:var(--panel);border:1px solid var(--panel-border);
-    display:flex;align-items:center;justify-content:center;color:var(--text-dim);flex-shrink:0;cursor:pointer;
-  }
-  .icon-btn svg{width:15px;height:15px;}
+  .btn:hover{border-color:var(--ink-faint);color:var(--ink);}
+  .btn.-primary{background:var(--indigo);color:#fff;border-color:var(--indigo);}
+  .btn.-primary:hover{background:#3745bf;}
+  .btn svg{width:14px;height:14px;}
+  .btn.-spinning svg{animation:spin .6s linear;}
+  @keyframes spin{to{transform:rotate(360deg);}}
 
-  /* Filter pills */
-  .filters{display:flex;gap:8px;overflow-x:auto;margin-bottom:18px;padding-bottom:2px;scrollbar-width:none;}
-  .filters::-webkit-scrollbar{display:none;}
-  .fpill{
-    flex-shrink:0;padding:7px 14px;border-radius:20px;font-size:12.5px;font-weight:600;cursor:pointer;
-    background:var(--panel);border:1px solid var(--panel-border);color:var(--text-dim);white-space:nowrap;
-    transition:all .15s ease;
+  /* Filters */
+  .filters{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 18px;margin-bottom:20px;}
+  .filters-title{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);font-weight:700;margin:0 0 12px;}
+  .filters-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;}
+  @media(max-width:1050px){.filters-grid{grid-template-columns:repeat(3,1fr);}}
+  @media(max-width:640px){.filters-grid{grid-template-columns:repeat(2,1fr);}}
+  .field label{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-faint);font-weight:700;margin-bottom:5px;}
+  .field select{
+    width:100%;padding:7px 8px;border:1px solid var(--border);border-radius:8px;background:var(--bg);
+    font-family:var(--sans);font-size:12.5px;color:var(--ink);
   }
-  .fpill.-active{background:linear-gradient(135deg,var(--teal),#1fb8a6);color:#04231f;border-color:transparent;}
+  .filters-actions{margin-top:14px;display:flex;align-items:center;gap:12px;}
+  .reset-btn{background:var(--ink);color:#fff;border:none;padding:7px 13px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;}
+  .filter-count{font-size:11.5px;color:var(--ink-dim);}
 
-  /* KPI grid */
-  .kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
-  .kpi{
-    background:var(--panel);border:1px solid var(--panel-border);border-radius:var(--radius-md);padding:13px 14px;
-  }
-  .kpi .lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-faint);margin-bottom:6px;}
-  .kpi .val{font-size:21px;font-weight:700;font-family:var(--mono);}
-  .kpi .val span{font-size:12px;font-weight:500;color:var(--text-dim);margin-left:3px;font-family:var(--sans);}
-  .kpi .sub{font-size:10.5px;color:var(--text-dim);margin-top:5px;}
-  .kpi .sub.-teal{color:var(--teal);}
-  .kpi .sub.-amber{color:var(--amber);}
-  .kpi .sub.-crit{color:var(--crit);}
-  .dot-inline{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--crit);margin-right:5px;}
+  /* KPI row */
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px;}
+  @media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr);}}
+  .kpi{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px 15px;}
+  .kpi-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+  .kpi-icon{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .kpi-icon svg{width:15px;height:15px;}
+  .kpi-icon.-indigo{background:var(--indigo-bg);color:var(--indigo);}
+  .kpi-icon.-violet{background:var(--violet-bg);color:var(--violet);}
+  .kpi-icon.-coral{background:var(--coral-bg);color:var(--coral);}
+  .kpi-icon.-teal{background:var(--teal-bg);color:var(--teal);}
+  .kpi-icon.-amber{background:var(--amber-bg);color:var(--amber);}
+  .kpi .lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);font-weight:700;}
+  .kpi .val{font-size:23px;font-weight:700;font-family:var(--mono);margin-top:2px;}
+  .kpi .val span{font-size:11.5px;font-weight:500;color:var(--ink-dim);font-family:var(--sans);margin-left:4px;}
+  .kpi .sub{font-size:11px;margin-top:6px;color:var(--ink-dim);}
+  .kpi .sub.-teal{color:var(--teal);} .kpi .sub.-coral{color:var(--coral);} .kpi .sub.-amber{color:var(--amber);}
 
-  /* Panels */
-  .panel{background:var(--panel);border:1px solid var(--panel-border);border-radius:var(--radius-lg);padding:18px 16px;margin-bottom:14px;}
+  /* Two column row */
+  .row2{display:grid;grid-template-columns:1.3fr 1fr;gap:14px;margin-bottom:14px;}
+  @media(max-width:900px){.row2{grid-template-columns:1fr;}}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px;}
   .panel-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;}
-  .panel-top h2{font-size:14px;margin:0;font-weight:600;display:flex;align-items:center;gap:7px;}
-  .panel-top .badge-tag{font-size:10px;background:rgba(109,123,247,0.16);color:#a9b1ff;padding:2px 8px;border-radius:8px;font-weight:600;}
-  .panel-top .link{font-size:11.5px;color:var(--teal);text-decoration:none;font-weight:600;}
-  .panel-sub{font-size:11.5px;color:var(--text-dim);margin:0 0 16px;}
-  .health-dot{width:7px;height:7px;border-radius:50%;background:var(--teal);display:inline-block;box-shadow:0 0 6px var(--teal);}
+  .panel-top h2{font-size:14.5px;margin:0;font-weight:600;display:flex;align-items:center;gap:8px;}
+  .panel-sub{font-size:12px;color:var(--ink-dim);margin:0 0 16px;}
+  .badge-tag{font-size:10px;background:var(--indigo-bg);color:var(--indigo);padding:3px 9px;border-radius:8px;font-weight:700;}
+  .link{font-size:11.5px;color:var(--indigo);text-decoration:none;font-weight:600;}
 
   /* Cylinders */
-  .cyl-row{display:flex;align-items:flex-end;justify-content:space-around;height:150px;margin-bottom:14px;padding:0 4px;}
+  .cyl-row{display:flex;align-items:flex-end;justify-content:space-around;height:150px;margin-bottom:16px;padding:0 10px;}
   .cyl-col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:8px;}
-  .cyl-chip{font-size:10px;font-weight:700;background:rgba(255,255,255,0.08);padding:2px 8px;border-radius:8px;color:var(--text);}
-  .cyl{
-    width:52px;border-radius:14px 14px 6px 6px;position:relative;
-  }
-  .cyl::before{
-    content:"";position:absolute;top:-7px;left:0;right:0;height:14px;border-radius:50%;
-    background:inherit;filter:brightness(1.35);
-  }
-  .cyl.-teal{background:linear-gradient(180deg,#4be6d4,#189d8b);box-shadow:0 8px 20px rgba(47,214,194,0.25);}
-  .cyl.-amber{background:linear-gradient(180deg,#ffc06a,#c9791a);box-shadow:0 8px 20px rgba(245,168,64,0.22);}
-  .cyl.-crit{background:linear-gradient(180deg,#ff7a9c,#c22a52);box-shadow:0 8px 20px rgba(244,80,122,0.22);}
-
-  .legend-row{display:flex;justify-content:space-between;gap:8px;}
-  .legend-item{flex:1;text-align:center;background:rgba(255,255,255,0.03);border:1px solid var(--panel-border);border-radius:12px;padding:9px 4px;}
+  .cyl-chip{font-size:10.5px;font-weight:700;background:var(--bg);border:1px solid var(--border);padding:2px 9px;border-radius:8px;}
+  .cyl{width:56px;border-radius:14px 14px 5px 5px;position:relative;}
+  .cyl::before{content:"";position:absolute;top:-7px;left:0;right:0;height:14px;border-radius:50%;background:inherit;filter:brightness(1.2);}
+  .cyl.-teal{background:linear-gradient(180deg,#3fd6bd,#0f9c8a);box-shadow:0 10px 18px rgba(15,156,138,0.22);}
+  .cyl.-violet{background:linear-gradient(180deg,#9c8ded,#6f5bd6);box-shadow:0 10px 18px rgba(111,91,214,0.2);}
+  .cyl.-coral{background:linear-gradient(180deg,#f27f92,#e0435f);box-shadow:0 10px 18px rgba(224,67,95,0.2);}
+  .legend-row{display:flex;gap:8px;}
+  .legend-item{flex:1;text-align:center;background:var(--bg);border:1px solid var(--border-soft);border-radius:10px;padding:9px 4px;}
   .legend-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px;}
   .legend-item .lname{font-size:11px;font-weight:600;}
   .legend-item .lpct{font-size:15px;font-weight:700;font-family:var(--mono);margin:3px 0 1px;}
-  .legend-item .litems{font-size:10px;color:var(--text-faint);}
+  .legend-item .litems{font-size:10px;color:var(--ink-faint);}
 
-  /* Budget tube */
-  .tube-wrap{background:rgba(255,255,255,0.05);border-radius:20px;height:26px;position:relative;overflow:hidden;margin-bottom:10px;}
-  .tube-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#1fb8a6,#4be6d4);position:relative;transition:width .4s ease;}
-  .tube-fill::after{content:"";position:absolute;top:3px;left:8px;right:8px;height:4px;border-radius:6px;background:rgba(255,255,255,0.35);}
-  .tube-cap{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--crit);}
-  .tube-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);}
-  .tube-labels strong{color:var(--text);font-family:var(--mono);font-weight:600;}
+  /* Gauge */
+  .gauge-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:12px;}
+  .gauge-track{background:var(--border-soft);border-radius:20px;height:22px;width:100%;position:relative;overflow:hidden;}
+  .gauge-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#3fd6bd,#0f9c8a);position:relative;transition:width .4s ease;}
+  .gauge-target{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--coral);}
+  .gauge-scale{display:flex;justify-content:space-between;font-size:10px;color:var(--ink-faint);width:100%;margin-top:5px;}
+  .gauge-labels{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink-dim);width:100%;margin-top:8px;}
+  .gauge-labels strong{color:var(--ink);font-family:var(--mono);}
 
-  /* Milestone / risk list items */
-  .list-item{
-    display:flex;gap:11px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);border-left:3px solid var(--teal);padding-left:12px;
-  }
-  .list-item:last-child{border-bottom:none;}
-  .list-item.-amber{border-left-color:var(--amber);}
-  .list-item.-crit{border-left-color:var(--crit);}
-  .avatar{
-    width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;
-    font-size:10.5px;font-weight:700;flex-shrink:0;color:var(--text-dim);
-  }
-  .li-body{flex:1;min-width:0;}
-  .li-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:3px;}
-  .li-tag{font-size:9.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-faint);font-weight:700;}
-  .li-title{font-size:13px;font-weight:600;margin:2px 0 6px;line-height:1.3;}
-  .li-meta{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--text-dim);}
-  .li-owner{display:flex;align-items:center;gap:6px;}
-  .badge{padding:3px 9px;border-radius:10px;font-size:10px;font-weight:700;white-space:nowrap;text-transform:uppercase;letter-spacing:.02em;}
-  .badge.-teal{background:var(--teal-dim);color:var(--teal);}
-  .badge.-amber{background:var(--amber-dim);color:var(--amber);}
-  .badge.-crit{background:var(--crit-dim);color:var(--crit);}
-  .risk-count-badge{background:var(--crit-dim);color:var(--crit);font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;margin-right:6px;}
+  .health-score{display:flex;align-items:center;gap:14px;background:var(--bg);border:1px solid var(--border-soft);border-radius:12px;padding:14px 16px;margin-top:14px;}
+  .hex{width:52px;height:52px;flex-shrink:0;position:relative;display:flex;align-items:center;justify-content:center;}
+  .hex svg{width:100%;height:100%;}
+  .health-score .num{font-size:20px;font-weight:700;font-family:var(--mono);}
+  .health-score .num span{font-size:11.5px;color:var(--ink-dim);font-family:var(--sans);}
+  .health-score .desc{font-size:11px;color:var(--ink-dim);margin-top:2px;line-height:1.4;}
 
-  .empty{text-align:center;color:var(--text-faint);font-size:12.5px;padding:20px 0;}
+  /* Category components panel */
+  .cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+  @media(max-width:700px){.cat-grid{grid-template-columns:1fr;}}
+  .cat-card{border:1px solid var(--border-soft);border-radius:12px;padding:12px 14px;background:var(--bg);}
+  .cat-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .cat-name{font-size:12.5px;font-weight:600;}
+  .cat-count{font-size:11px;color:var(--ink-dim);font-family:var(--mono);}
+  .cat-bar-track{background:var(--border-soft);height:6px;border-radius:6px;overflow:hidden;margin-bottom:7px;}
+  .cat-bar-fill{height:100%;border-radius:6px;}
+  .cat-meta{display:flex;justify-content:space-between;font-size:10.5px;color:var(--ink-faint);}
+  .cat-meta .warn{color:var(--coral);font-weight:600;}
 
-  /* Bottom nav */
-  .bottomnav{
-    position:absolute;left:16px;right:16px;bottom:16px;background:rgba(10,14,26,0.9);backdrop-filter:blur(12px);
-    border:1px solid var(--panel-border);border-radius:20px;display:flex;justify-content:space-around;padding:10px 4px;
-  }
-  .navbtn{
-    display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--text-faint);background:none;border:none;
-    font-family:var(--sans);font-size:10px;font-weight:600;cursor:pointer;position:relative;padding:2px 6px;
-  }
-  .navbtn svg{width:18px;height:18px;}
-  .navbtn.-active{color:var(--teal);}
-  .navbtn.-active::before{
-    content:"";position:absolute;top:-9px;width:4px;height:4px;border-radius:50%;background:var(--teal);
-  }
-
-  .view{display:none;}
-  .view.-visible{display:block;}
-
-  .proj-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
-  .proj-row:last-child{border-bottom:none;}
-  .proj-name{font-size:12.5px;font-weight:600;}
-  .proj-dept{font-size:10.5px;color:var(--text-faint);}
+  /* Lists */
+  table{width:100%;border-collapse:collapse;}
+  th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-faint);font-weight:700;padding:0 8px 8px;border-bottom:1px solid var(--border);}
+  td{padding:9px 8px;border-bottom:1px solid var(--border-soft);font-size:12.5px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  .badge{display:inline-block;padding:2px 9px;border-radius:10px;font-size:10.5px;font-weight:700;white-space:nowrap;}
+  .badge.-teal{background:var(--teal-bg);color:var(--teal);}
+  .badge.-amber{background:var(--amber-bg);color:var(--amber);}
+  .badge.-coral{background:var(--coral-bg);color:var(--coral);}
+  .badge.-violet{background:var(--violet-bg);color:var(--violet);}
+  .table-scroll{max-height:280px;overflow-y:auto;}
+  .empty-row td{text-align:center;color:var(--ink-faint);padding:22px 8px;}
 </style>
 </head>
 <body>
-<div class="phone">
+<div class="app">
 
-  <div class="status">
-    <div class="live"><span class="live-dot"></span><span id="liveTime">En vivo · --:--:--</span></div>
-    <button class="sync-btn" id="syncBtn" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2v6h-6M3 22v-6h6M3.5 9a8.5 8.5 0 0 1 14.7-4.9M20.5 15a8.5 8.5 0 0 1-14.7 4.9"/></svg>
-      Sincronizar
-    </button>
+  <div class="status-row">
+    <span class="live-dot"></span><span id="liveLabel">En vivo</span>
+    <span class="status-sep">|</span>
+    <span>Cód. Panel: MK-HD-2026-X</span>
   </div>
 
   <div class="hdr">
     <div>
-      <h1>Panel Ejecutivo <span class="pill-tag">Portafolio</span></h1>
-      <p>Control de salud, hitos y riesgos en 3D</p>
+      <h1>Panel Ejecutivo de Soporte — MK HelpDesk</h1>
+      <p>Control en tiempo real de tickets, cumplimiento de SLA, carga por componente de soporte y satisfacción, con análisis del agente MK HelpDesk.</p>
     </div>
-    <div class="icon-btn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4h18l-7 8v6l-4 2v-8L3 4z"/></svg>
+    <div class="hdr-actions">
+      <button class="btn" id="resetTopBtn" type="button">↺ Restablecer</button>
+      <button class="btn -primary" id="syncBtn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2v6h-6M3 22v-6h6M3.5 9a8.5 8.5 0 0 1 14.7-4.9M20.5 15a8.5 8.5 0 0 1-14.7 4.9"/></svg>
+        Sincronizar datos
+      </button>
     </div>
   </div>
 
-  <div class="filters" id="filterPills"></div>
+  <div class="filters">
+    <p class="filters-title">Filtros de mesa de ayuda</p>
+    <div class="filters-grid">
+      <div class="field"><label for="f-dept">Departamento</label><select id="f-dept"></select></div>
+      <div class="field"><label for="f-agent">Agente</label><select id="f-agent"></select></div>
+      <div class="field"><label for="f-cat">Categoría</label><select id="f-cat"></select></div>
+      <div class="field"><label for="f-status">Estado</label><select id="f-status"></select></div>
+      <div class="field"><label for="f-priority">Prioridad</label><select id="f-priority"></select></div>
+      <div class="field"><label for="f-channel">Canal</label><select id="f-channel"></select></div>
+      <div class="field"><label for="f-sla">SLA</label><select id="f-sla"></select></div>
+    </div>
+    <div class="filters-actions">
+      <button class="reset-btn" id="resetBtn" type="button">Restablecer filtros</button>
+      <span class="filter-count" id="filterCount"></span>
+    </div>
+  </div>
 
-  <!-- ===== VISTA: PORTAFOLIO ===== -->
-  <div class="view -visible" id="view-portafolio">
-    <div class="kpis" id="kpiRow"></div>
+  <div class="kpis" id="kpiRow"></div>
 
+  <div class="row2">
     <div class="panel">
       <div class="panel-top">
-        <h2><span class="health-dot"></span>Salud del Portafolio 3D</h2>
-        <span class="badge-tag">ISO-3D</span>
+        <h2>Distribución de Tickets 3D</h2>
+        <span class="badge-tag">Matriz en vivo</span>
       </div>
-      <p class="panel-sub">Volumen cilíndrico isométrico por condición</p>
+      <p class="panel-sub">Proyección volumétrica del estado de tickets filtrados</p>
       <div class="cyl-row" id="cylRow"></div>
       <div class="legend-row" id="legendRow"></div>
     </div>
 
     <div class="panel">
+      <div class="panel-top"><h2>Cumplimiento de SLA</h2></div>
+      <p class="panel-sub" id="slaSub">Porcentaje de tickets dentro del acuerdo de servicio</p>
+      <div class="gauge-wrap">
+        <div class="gauge-track"><div class="gauge-fill" id="gaugeFill"><div class="gauge-target" id="gaugeTarget"></div></div></div>
+        <div class="gauge-scale"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
+        <div class="gauge-labels"><span>Cumplido: <strong id="slaCompliantLbl">0</strong></span><span>Meta: <strong>95%</strong></span></div>
+      </div>
+      <div class="health-score">
+        <div class="hex">
+          <svg viewBox="0 0 100 100"><polygon points="50,3 93,26 93,74 50,97 7,74 7,26" fill="#e9ecfb" stroke="#4353d6" stroke-width="3"/></svg>
+        </div>
+        <div>
+          <div class="num" id="healthScore">--<span>/100</span></div>
+          <div class="desc">Índice de salud del soporte, calculado por el agente MK HelpDesk analizando SLA, reincidencia y satisfacción.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-bottom:14px;">
+    <div class="panel-top"><h2>Componentes de Soporte</h2></div>
+    <p class="panel-sub">Volumen y estado de tickets por cada categoría de soporte</p>
+    <div class="cat-grid" id="catGrid"></div>
+  </div>
+
+  <div class="row2">
+    <div class="panel">
       <div class="panel-top">
-        <h2>Ejecución Presupuestaria 3D</h2>
-        <span class="badge -teal" id="budgetStatusBadge">Dentro de costo</span>
+        <h2>Tickets próximos a vencer SLA</h2>
+        <span class="link" id="slaAtRiskCount"></span>
       </div>
-      <p class="panel-sub" id="budgetSub">Cilindro tubular de gasto</p>
-      <div class="tube-wrap"><div class="tube-fill" id="tubeFill"><div class="tube-cap" style="left:100%"></div></div></div>
-      <div class="tube-labels">
-        <span>Gastado: <strong id="spentLbl">$0</strong></span>
-        <span>Tope: <strong id="allocLbl">$0</strong></span>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Ticket</th><th>Categoría</th><th>Agente</th><th>SLA</th></tr></thead>
+          <tbody id="slaRiskBody"></tbody>
+        </table>
       </div>
     </div>
-
     <div class="panel">
-      <div class="panel-top">
-        <h2>Próximos Hitos Críticos</h2>
-        <a href="javascript:void(0)" class="link" onclick="setTab('proyectos')">Ver todos</a>
+      <div class="panel-top"><h2>Carga por Agente</h2></div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Agente</th><th>Tickets</th><th>Vencidos</th><th>CSAT</th></tr></thead>
+          <tbody id="agentBody"></tbody>
+        </table>
       </div>
-      <div id="milestoneList"></div>
-    </div>
-
-    <div class="panel">
-      <div class="panel-top">
-        <h2>⚠ Foco de Riesgos Activos</h2>
-        <span class="badge -crit" id="riskCountBadge">0 Registrados</span>
-      </div>
-      <div id="riskList"></div>
     </div>
   </div>
 
-  <!-- ===== VISTA: PROYECTOS ===== -->
-  <div class="view" id="view-proyectos">
-    <div class="panel">
-      <div class="panel-top"><h2>Todos los proyectos</h2></div>
-      <p class="panel-sub" id="projCountSub"></p>
-      <div id="projectList"></div>
-    </div>
-  </div>
-
-  <!-- ===== VISTA: RIESGOS ===== -->
-  <div class="view" id="view-riesgos">
-    <div class="panel">
-      <div class="panel-top"><h2>⚠ Todos los riesgos</h2></div>
-      <p class="panel-sub" id="riskCountSubFull"></p>
-      <div id="riskListFull"></div>
-    </div>
-  </div>
-
-  <!-- ===== VISTA: PRESUPUESTO ===== -->
-  <div class="view" id="view-presupuesto">
-    <div class="panel">
-      <div class="panel-top"><h2>Presupuesto por proyecto</h2></div>
-      <div id="budgetList"></div>
-    </div>
-  </div>
-
-  <div class="bottomnav">
-    <button class="navbtn -active" data-tab="portafolio" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-      Portafolio
-    </button>
-    <button class="navbtn" data-tab="proyectos" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>
-      Proyectos
-    </button>
-    <button class="navbtn" data-tab="riesgos" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l9 16H3L12 3z"/><path d="M12 10v4M12 17h.01"/></svg>
-      Riesgos
-    </button>
-    <button class="navbtn" data-tab="presupuesto" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9.5c0-1.4 1.3-2.5 3-2.5s3 1 3 2.2-1.3 1.8-3 2.3-3 1-3 2.3 1.3 2.2 3 2.2 3-1.1 3-2.5"/></svg>
-      Presupuesto
-    </button>
-  </div>
 </div>
 
 <script>
 /* ---------- DATOS ---------- */
-const PROJECTS = [
-  {name:"Mejora de Seguridad Física y Sensores", dept:"Operaciones", category:"Almacén Central", owner:"Laura Rogers", health:"Crítico", risks:5, riskStatus:"Bloqueado", allocated:220000, spent:190000},
-  {name:"Auditoría Externa SOC2 Tipo II", dept:"Tecnología", category:"Ciberseguridad", owner:"Marco Díaz", health:"Crítico", risks:5, riskStatus:"En revisión", allocated:150000, spent:135000},
-  {name:"Migración Cloud AWS", dept:"Tecnología", category:"Infraestructura", owner:"Laura Rogers", health:"En riesgo", risks:4, riskStatus:"Riesgo medio", allocated:260000, spent:150000,
-    milestone:{title:"Corte productivo de bases de datos", due:"2026-04-15"}},
-  {name:"Renegociación Flota de Transporte", dept:"Operaciones", category:"Logística", owner:"Diego Pardo", health:"En riesgo", risks:4, riskStatus:"En revisión", allocated:180000, spent:90000},
-  {name:"Cierre Contable Automatizado", dept:"Finanzas", category:"Contabilidad", owner:"Ana Torres", health:"En riesgo", risks:3, riskStatus:"Riesgo medio", allocated:140000, spent:95000},
-  {name:"Rediseño Política de Gastos", dept:"Finanzas", category:"Cumplimiento", owner:"Marco Díaz", health:"En curso", risks:2, allocated:95000, spent:60000,
-    milestone:{title:"Archivar documentos finales y auditoría", due:"2026-03-31"}},
-  {name:"Optimización de Rutas de Reparto", dept:"Operaciones", category:"Logística", owner:"Diego Pardo", health:"En curso", risks:2, allocated:130000, spent:70000},
-  {name:"Portal de Autoservicio de Clientes", dept:"Tecnología", category:"Producto Digital", owner:"Marco Díaz", health:"En curso", risks:1, allocated:175000, spent:80000},
-  {name:"Consolidación de Centros de Datos", dept:"Tecnología", category:"Infraestructura", owner:"Marco Díaz", health:"En curso", risks:2, allocated:300000, spent:280000},
-  {name:"Renovación de Flota de Vehículos", dept:"Operaciones", category:"Logística", owner:"Diego Pardo", health:"En curso", risks:0, allocated:400000, spent:20000},
-  {name:"Automatización de Cierre Financiero", dept:"Finanzas", category:"Contabilidad", owner:"Ana Torres", health:"En curso", risks:2, allocated:150000, spent:90000},
-  {name:"Plan de Capacitación en Cumplimiento", dept:"Finanzas", category:"RR.HH. Financiero", owner:"Ana Torres", health:"En curso", risks:0, allocated:30000, spent:5000},
-  {name:"Reestructuración de Precios", dept:"Finanzas", category:"Comercial", owner:"Ana Torres", health:"En curso", risks:0, allocated:20000, spent:19000},
-  {name:"Modernización de Almacén Secundario", dept:"Operaciones", category:"Almacén Central", owner:"Laura Rogers", health:"En curso", risks:1, allocated:210000, spent:95000},
-  {name:"Programa de Mantenimiento Predictivo", dept:"Operaciones", category:"Logística", owner:"Diego Pardo", health:"En curso", risks:1, allocated:160000, spent:60000},
-  {name:"Migración de CRM", dept:"Tecnología", category:"Producto Digital", owner:"Marco Díaz", health:"En curso", risks:1, allocated:250000, spent:130000},
-  {name:"Consolidación de Reportes Financieros", dept:"Finanzas", category:"Contabilidad", owner:"Ana Torres", health:"En curso", risks:1, allocated:110000, spent:55000},
-  {name:"Optimización de Inventario", dept:"Operaciones", category:"Almacén Central", owner:"Laura Rogers", health:"En curso", risks:1, allocated:145000, spent:70000},
-  {name:"Monitoreo de Infraestructura 24/7", dept:"Tecnología", category:"Infraestructura", owner:"Marco Díaz", health:"En curso", risks:1, allocated:120000, spent:55000},
-  {name:"Programa de Ciberhigiene Interna", dept:"Tecnología", category:"Ciberseguridad", owner:"Marco Díaz", health:"En curso", risks:1, allocated:75000, spent:47000},
+const CATEGORIES = ["Hardware","Software","Redes y Conectividad","Cuentas y Accesos","Impresión","Correo Electrónico","Telefonía y Comunicaciones","Aplicaciones Internas"];
+const CAT_COLOR = {
+  "Hardware":"#4353d6","Software":"#0f9c8a","Redes y Conectividad":"#6f5bd6","Cuentas y Accesos":"#c98a1c",
+  "Impresión":"#e0435f","Correo Electrónico":"#2f8fd6","Telefonía y Comunicaciones":"#0aa9a1","Aplicaciones Internas":"#9c4fd6"
+};
+
+const TICKETS = [
+  {id:"HD-1001",cat:"Hardware",dept:"Ventas",agent:"Marco Díaz",status:"Resuelto",priority:"Media",channel:"Portal",sla:"Cumplido",csat:5,resHours:4},
+  {id:"HD-1002",cat:"Hardware",dept:"Operaciones",agent:"Laura Rogers",status:"Vencido",priority:"Alta",channel:"Teléfono",sla:"Vencido",csat:2,resHours:null},
+  {id:"HD-1003",cat:"Hardware",dept:"Finanzas",agent:"Ana Torres",status:"En progreso",priority:"Media",channel:"Email",sla:"En riesgo",csat:null,resHours:null},
+  {id:"HD-1004",cat:"Hardware",dept:"RR.HH.",agent:"Diego Pardo",status:"Resuelto",priority:"Baja",channel:"Chat",sla:"Cumplido",csat:4,resHours:6},
+  {id:"HD-1005",cat:"Hardware",dept:"Dirección",agent:"Marco Díaz",status:"Abierto",priority:"Alta",channel:"Teléfono",sla:"En riesgo",csat:null,resHours:null},
+  {id:"HD-1006",cat:"Hardware",dept:"Ventas",agent:"Laura Rogers",status:"Resuelto",priority:"Media",channel:"Portal",sla:"Cumplido",csat:4,resHours:5},
+
+  {id:"HD-2001",cat:"Software",dept:"Operaciones",agent:"Ana Torres",status:"Resuelto",priority:"Alta",channel:"Portal",sla:"Cumplido",csat:5,resHours:3},
+  {id:"HD-2002",cat:"Software",dept:"Ventas",agent:"Marco Díaz",status:"En progreso",priority:"Media",channel:"Chat",sla:"En riesgo",csat:null,resHours:null},
+  {id:"HD-2003",cat:"Software",dept:"Finanzas",agent:"Diego Pardo",status:"Resuelto",priority:"Baja",channel:"Email",sla:"Cumplido",csat:3,resHours:8},
+  {id:"HD-2004",cat:"Software",dept:"RR.HH.",agent:"Laura Rogers",status:"Vencido",priority:"Alta",channel:"Portal",sla:"Vencido",csat:2,resHours:null},
+  {id:"HD-2005",cat:"Software",dept:"Dirección",agent:"Ana Torres",status:"Resuelto",priority:"Media",channel:"Chat",sla:"Cumplido",csat:5,resHours:2},
+  {id:"HD-2006",cat:"Software",dept:"Operaciones",agent:"Marco Díaz",status:"Abierto",priority:"Media",channel:"Email",sla:"Cumplido",csat:null,resHours:null},
+
+  {id:"HD-3001",cat:"Redes y Conectividad",dept:"Ventas",agent:"Diego Pardo",status:"Vencido",priority:"Alta",channel:"Teléfono",sla:"Vencido",csat:1,resHours:null},
+  {id:"HD-3002",cat:"Redes y Conectividad",dept:"Operaciones",agent:"Laura Rogers",status:"En progreso",priority:"Alta",channel:"Portal",sla:"En riesgo",csat:null,resHours:null},
+  {id:"HD-3003",cat:"Redes y Conectividad",dept:"Finanzas",agent:"Marco Díaz",status:"Resuelto",priority:"Media",channel:"Chat",sla:"Cumplido",csat:4,resHours:5},
+  {id:"HD-3004",cat:"Redes y Conectividad",dept:"RR.HH.",agent:"Ana Torres",status:"Resuelto",priority:"Baja",channel:"Email",sla:"Cumplido",csat:5,resHours:3},
+  {id:"HD-3005",cat:"Redes y Conectividad",dept:"Dirección",agent:"Diego Pardo",status:"Abierto",priority:"Alta",channel:"Teléfono",sla:"En riesgo",csat:null,resHours:null},
+  {id:"HD-3006",cat:"Redes y Conectividad",dept:"Ventas",agent:"Laura Rogers",status:"Resuelto",priority:"Media",channel:"Portal",sla:"Cumplido",csat:3,resHours:7},
+
+  {id:"HD-4001",cat:"Cuentas y Accesos",dept:"Operaciones",agent:"Ana Torres",status:"Resuelto",priority:"Alta",channel:"Portal",sla:"Cumplido",csat:5,resHours:1},
+  {id:"HD-4002",cat:"Cuentas y Accesos",dept:"Finanzas",agent:"Marco Díaz",status:"Resuelto",priority:"Media",channel:"Email",sla:"Cumplido",csat:4,resHours:2},
+  {id:"HD-4003",cat:"Cuentas y Accesos",dept:"RR.HH.",agent:"Diego Pardo",status:"En progreso",priority:"Alta",channel:"Chat",sla:"En riesgo",csat:null,resHours:null},
+  {id:"HD-4004",cat:"Cuentas y Accesos",dept:"Dirección",agent:"Laura Rogers",status:"Vencido",priority:"Alta",channel:"Teléfono",sla:"Vencido",csat:2,resHours:null},
+  {id:"HD-4005",cat:"Cuentas y Accesos",dept:"Ventas",agent:"Ana Torres",status:"Resuelto",priority:"Baja",channel:"Portal",sla:"Cumplido",csat:5,resHours:1},
+  {id:"HD-4006",cat:"Cuentas y Accesos",dept:"Operaciones",agent:"Marco Díaz",status:"Abierto",priority:"Media",channel:"Email",sla:"Cumplido",csat:null,resHours:null},
+
+  {id:"HD-5001",cat:"Impresión",dept:"Finanzas",agent:"Diego Pardo",status:"Resuelto",priority:"Baja",channel:"Portal",sla:"Cumplido",csat:4,resHours:3},
+  {id:"HD-5002",cat:"Impresión",dept:"RR.HH.",agent:"Laura Rogers",status:"Resuelto",priority:"Media",channel:"Chat",sla:"Cumplido",csat:3,resHours:5},
+  {id:"HD-5003",cat:"Impresión",dept:"Dirección",agent:"Ana Torres",status:"En progreso",priority:"Baja",channel:"Email",sla:"En riesgo",csat:null,resHours:null},
+  {id:"HD-5004",cat:"Impresión",dept:"Ventas",agent:"Marco Díaz",status:"Vencido",priority:"Media",channel:"Portal",sla:"Vencido",csat:2,resHours:null},
+  {id:"HD-5005",cat:"Impresión",dept:"Operaciones",agent:"Diego Pardo",status:"Resuelto",priority:"Baja",channel:"Chat",sla:"Cumplido",csat:5,resHours:2},
+
+  {id:"HD-6001",cat:"Correo Electrónico",dept:"Finanzas",agent:"Laura Rogers",status:"Resuelto",priority:"Media",channel:"Portal",sla:"Cumplido",csat:4,resHours:2},
+  {id:"HD-6002",cat:"Correo Electrónico",dept:"RR.HH.",agent:"Ana Torres",status:"Abierto",priority:"Alta",channel:"Email",sla:"En riesgo",csat:null,resHours:null},
+  {id:"HD-6003",cat:"Correo Electrónico",dept:"Dirección",agent:"Marco Díaz",status:"Resuelto",priority:"Media",channel:"Chat",sla:"Cumplido",csat:5,resHours:1},
+  {id:"HD-6004",cat:"Correo Electrónico",dept:"Ventas",agent:"Diego Pardo",status:"En progreso",priority:"Alta",channel:"Portal",sla:"En riesgo",csat:null,resHours:null},
+  {id:"HD-6005",cat:"Correo Electrónico",dept:"Operaciones",agent:"Laura Rogers",status:"Resuelto",priority:"Baja",channel:"Email",sla:"Cumplido",csat:3,resHours:4},
+
+  {id:"HD-7001",cat:"Telefonía y Comunicaciones",dept:"Ventas",agent:"Ana Torres",status:"Resuelto",priority:"Media",channel:"Teléfono",sla:"Cumplido",csat:4,resHours:3},
+  {id:"HD-7002",cat:"Telefonía y Comunicaciones",dept:"Operaciones",agent:"Marco Díaz",status:"Vencido",priority:"Alta",channel:"Teléfono",sla:"Vencido",csat:1,resHours:null},
+  {id:"HD-7003",cat:"Telefonía y Comunicaciones",dept:"Finanzas",agent:"Diego Pardo",status:"Resuelto",priority:"Baja",channel:"Portal",sla:"Cumplido",csat:5,resHours:2},
+  {id:"HD-7004",cat:"Telefonía y Comunicaciones",dept:"RR.HH.",agent:"Laura Rogers",status:"En progreso",priority:"Media",channel:"Chat",sla:"En riesgo",csat:null,resHours:null},
+  {id:"HD-7005",cat:"Telefonía y Comunicaciones",dept:"Dirección",agent:"Ana Torres",status:"Resuelto",priority:"Media",channel:"Email",sla:"Cumplido",csat:4,resHours:3},
+
+  {id:"HD-8001",cat:"Aplicaciones Internas",dept:"Ventas",agent:"Marco Díaz",status:"Resuelto",priority:"Alta",channel:"Portal",sla:"Cumplido",csat:5,resHours:4},
+  {id:"HD-8002",cat:"Aplicaciones Internas",dept:"Operaciones",agent:"Diego Pardo",status:"Vencido",priority:"Alta",channel:"Chat",sla:"Vencido",csat:2,resHours:null},
+  {id:"HD-8003",cat:"Aplicaciones Internas",dept:"Finanzas",agent:"Laura Rogers",status:"En progreso",priority:"Media",channel:"Email",sla:"En riesgo",csat:null,resHours:null},
+  {id:"HD-8004",cat:"Aplicaciones Internas",dept:"RR.HH.",agent:"Ana Torres",status:"Resuelto",priority:"Baja",channel:"Portal",sla:"Cumplido",csat:3,resHours:6},
+  {id:"HD-8005",cat:"Aplicaciones Internas",dept:"Dirección",agent:"Marco Díaz",status:"Resuelto",priority:"Media",channel:"Chat",sla:"Cumplido",csat:4,resHours:3},
 ];
 
-const HEALTH_INFO = {
-  "En curso":{cls:"teal", color:"#2fd6c2"},
-  "En riesgo":{cls:"amber", color:"#f5a840"},
-  "Crítico":{cls:"crit", color:"#f4507a"},
-};
-const RISK_STATUS_CLASS = {"Bloqueado":"crit","En revisión":"amber","Riesgo medio":"amber"};
+const STATUS_BADGE = {"Resuelto":"teal","En progreso":"violet","Abierto":"amber","Vencido":"coral"};
+const SLA_BADGE = {"Cumplido":"teal","En riesgo":"amber","Vencido":"coral"};
 
-let activeDept = "Todos";
-let activeTab = "portafolio";
+const state = {dept:"Todos", agent:"Todos", cat:"Todas", status:"Todos", priority:"Todas", channel:"Todos", sla:"Todos"};
 
-function fmtMoneyShort(n){
-  if(n >= 1000000) return "$" + (n/1000000).toFixed(2).replace(/\.00$/,"") + "M";
-  if(n >= 1000) return "$" + Math.round(n/1000) + "K";
-  return "$" + n;
-}
-function fmtMoneyFull(n){ return "$" + n.toLocaleString("es-AR"); }
-function initials(name){ return name.split(" ").map(w=>w[0]).slice(0,2).join("").toUpperCase(); }
-function fmtDate(iso){ const d = new Date(iso+"T00:00:00"); return d.toLocaleDateString("es-AR",{day:"2-digit",month:"2-digit",year:"numeric"}); }
-
-function filtered(){
-  return activeDept === "Todos" ? PROJECTS : PROJECTS.filter(p => p.dept === activeDept);
+function uniqueValues(key){ return Array.from(new Set(TICKETS.map(t=>t[key]))).sort(); }
+function populateSelect(id, values, allLabel){
+  const el = document.getElementById(id);
+  el.innerHTML = `<option value="${allLabel}">${allLabel}</option>` + values.map(v=>`<option value="${v}">${v}</option>`).join("");
 }
 
-function renderFilters(){
-  const depts = ["Todos", ...Array.from(new Set(PROJECTS.map(p=>p.dept)))];
-  const el = document.getElementById("filterPills");
-  el.innerHTML = depts.map(d => {
-    const label = d === "Todos" ? `Todos (${PROJECTS.length})` : d;
-    return `<button class="fpill ${d===activeDept?'-active':''}" data-dept="${d}" type="button">${label}</button>`;
-  }).join("");
-  el.querySelectorAll(".fpill").forEach(btn => btn.addEventListener("click", () => {
-    activeDept = btn.dataset.dept;
-    renderFilters();
-    renderAll();
-  }));
+function filteredTickets(){
+  return TICKETS.filter(t =>
+    (state.dept==="Todos"||t.dept===state.dept) &&
+    (state.agent==="Todos"||t.agent===state.agent) &&
+    (state.cat==="Todas"||t.cat===state.cat) &&
+    (state.status==="Todos"||t.status===state.status) &&
+    (state.priority==="Todas"||t.priority===state.priority) &&
+    (state.channel==="Todos"||t.channel===state.channel) &&
+    (state.sla==="Todos"||t.sla===state.sla)
+  );
 }
 
-function renderKPIs(data){
+function fmtHours(n){ return n==null ? "—" : n + " h"; }
+
+function render(){
+  const data = filteredTickets();
   const total = data.length;
-  const atRisk = data.filter(p => p.health !== "En curso").length;
-  const openRisks = data.reduce((a,p)=>a+p.risks,0);
-  const blocked = data.filter(p => p.riskStatus === "Bloqueado").length;
-  const allocated = data.reduce((a,p)=>a+p.allocated,0);
-  const spent = data.reduce((a,p)=>a+p.spent,0);
-  const pct = allocated ? Math.round(spent/allocated*100) : 0;
-  const activePct = total ? Math.round((data.filter(p=>p.health!=="Crítico").length/total)*100) : 0;
-  const atRiskPct = total ? Math.round(atRisk/total*100) : 0;
+  const attention = data.filter(t=>t.status==="Abierto"||t.status==="En progreso").length;
+  const overdue = data.filter(t=>t.sla==="Vencido").length;
+  const resolved = data.filter(t=>t.status==="Resuelto");
+  const avgRes = resolved.length ? (resolved.reduce((a,t)=>a+(t.resHours||0),0)/resolved.length) : 0;
+  const csatVals = data.filter(t=>t.csat!=null).map(t=>t.csat);
+  const avgCsat = csatVals.length ? (csatVals.reduce((a,b)=>a+b,0)/csatVals.length) : 0;
 
   document.getElementById("kpiRow").innerHTML = `
     <div class="kpi">
-      <div class="lbl">Alcance total</div>
-      <div class="val">${total}<span>proyectos</span></div>
-      <div class="sub -teal">↑ ${activePct}% activos</div>
+      <div class="kpi-top"><div class="kpi-icon -indigo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg></div></div>
+      <div class="lbl">Total tickets</div><div class="val">${total}<span>en alcance</span></div>
+      <div class="sub">100% del filtro actual</div>
     </div>
     <div class="kpi">
-      <div class="lbl">En riesgo</div>
-      <div class="val">${atRisk}<span>atención</span></div>
-      <div class="sub -amber">${atRiskPct}% del portafolio</div>
+      <div class="kpi-top"><div class="kpi-icon -violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5l3 2"/></svg></div></div>
+      <div class="lbl">Atención requerida</div><div class="val">${attention}<span>tickets</span></div>
+      <div class="sub -amber">${total? Math.round(attention/total*100):0}% del volumen filtrado</div>
     </div>
     <div class="kpi">
-      <div class="lbl">Riesgos abiertos</div>
-      <div class="val">${openRisks}<span>críticos</span></div>
-      <div class="sub -crit"><span class="dot-inline"></span>${blocked} bloqueantes</div>
+      <div class="kpi-top"><div class="kpi-icon -coral"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l9 16H3L12 3z"/><path d="M12 10v4M12 17h.01"/></svg></div></div>
+      <div class="lbl">SLA vencidos</div><div class="val">${overdue}<span>tickets</span></div>
+      <div class="sub -coral">Requieren escalamiento inmediato</div>
     </div>
     <div class="kpi">
-      <div class="lbl">Presupuesto</div>
-      <div class="val">${fmtMoneyShort(allocated)}</div>
-      <div class="sub">Ejecutado: ${fmtMoneyShort(spent)} (${pct}%)</div>
+      <div class="kpi-top"><div class="kpi-icon -teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div></div>
+      <div class="lbl">Tiempo prom. resolución</div><div class="val">${avgRes?avgRes.toFixed(1):"—"}<span>hrs</span></div>
+      <div class="sub">Sobre tickets resueltos</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-top"><div class="kpi-icon -amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17.3l-5.4 3 1-6-4.5-4.1 6-.7L12 3l2.9 5.5 6 .7-4.5 4.1 1 6z"/></svg></div></div>
+      <div class="lbl">CSAT promedio</div><div class="val">${avgCsat?avgCsat.toFixed(1):"—"}<span>/5</span></div>
+      <div class="sub">Sobre tickets con encuesta</div>
     </div>
   `;
-}
 
-function renderCylinders(data){
-  const counts = {"En curso":0,"En riesgo":0,"Crítico":0};
-  data.forEach(p => counts[p.health]++);
-  const total = data.length || 1;
-  const max = Math.max(1, ...Object.values(counts));
-  const order = ["En curso","En riesgo","Crítico"];
-  document.getElementById("cylRow").innerHTML = order.map(h => {
-    const n = counts[h];
-    const heightPx = Math.max(24, Math.round((n/max)*118));
+  // Cylinders
+  const buckets = {"Resueltos":data.filter(t=>t.status==="Resuelto").length,
+                    "En progreso":data.filter(t=>t.status==="Abierto"||t.status==="En progreso").length,
+                    "Vencidos":data.filter(t=>t.status==="Vencido").length};
+  const maxB = Math.max(1, ...Object.values(buckets));
+  const order = [["Resueltos","teal"],["En progreso","violet"],["Vencidos","coral"]];
+  document.getElementById("cylRow").innerHTML = order.map(([k,cls])=>{
+    const n = buckets[k];
+    const h = Math.max(24, Math.round((n/maxB)*118));
+    return `<div class="cyl-col"><div class="cyl-chip">${n} tickets</div><div class="cyl -${cls}" style="height:${h}px"></div></div>`;
+  }).join("");
+  const colorMap = {teal:"#0f9c8a",violet:"#6f5bd6",coral:"#e0435f"};
+  document.getElementById("legendRow").innerHTML = order.map(([k,cls])=>{
+    const n = buckets[k]; const pct = total? Math.round(n/total*100):0;
+    return `<div class="legend-item"><div class="lname"><span class="legend-dot" style="background:${colorMap[cls]}"></span>${k}</div><div class="lpct">${pct}%</div><div class="litems">${n} items</div></div>`;
+  }).join("");
+
+  // SLA gauge
+  const slaTotal = data.length;
+  const slaOk = data.filter(t=>t.sla==="Cumplido").length;
+  const slaPct = slaTotal ? Math.round(slaOk/slaTotal*100) : 0;
+  document.getElementById("gaugeFill").style.width = slaPct + "%";
+  document.getElementById("gaugeTarget").style.left = "95%";
+  document.getElementById("slaCompliantLbl").textContent = slaPct + "%";
+  document.getElementById("slaSub").textContent = `${slaOk} de ${slaTotal} tickets dentro del acuerdo de servicio`;
+
+  // Health score
+  const overduePct = slaTotal ? (data.filter(t=>t.sla==="Vencido").length/slaTotal*100) : 0;
+  const riskPct = slaTotal ? (data.filter(t=>t.sla==="En riesgo").length/slaTotal*100) : 0;
+  let score = 100 - overduePct*0.7 - riskPct*0.3 + (avgCsat ? (avgCsat-3)*4 : 0);
+  score = Math.max(0, Math.min(100, score));
+  document.getElementById("healthScore").innerHTML = score.toFixed(1) + "<span>/100</span>";
+
+  // Category components
+  const catRows = CATEGORIES.map(cat => {
+    const items = data.filter(t=>t.cat===cat);
+    const overdueN = items.filter(t=>t.sla==="Vencido").length;
+    const resolvedItems = items.filter(t=>t.status==="Resuelto");
+    const avgResCat = resolvedItems.length ? (resolvedItems.reduce((a,t)=>a+(t.resHours||0),0)/resolvedItems.length) : null;
+    return {cat, count:items.length, overdueN, avgResCat};
+  });
+  const maxCount = Math.max(1, ...catRows.map(r=>r.count));
+  document.getElementById("catGrid").innerHTML = catRows.map(r => {
+    const pct = Math.round(r.count/maxCount*100);
     return `
-    <div class="cyl-col">
-      <div class="cyl-chip">${n} Proj</div>
-      <div class="cyl -${HEALTH_INFO[h].cls}" style="height:${heightPx}px"></div>
+    <div class="cat-card">
+      <div class="cat-top"><span class="cat-name">${r.cat}</span><span class="cat-count">${r.count} tickets</span></div>
+      <div class="cat-bar-track"><div class="cat-bar-fill" style="width:${pct}%;background:${CAT_COLOR[r.cat]}"></div></div>
+      <div class="cat-meta">
+        <span>Resolución prom.: ${r.avgResCat!=null ? r.avgResCat.toFixed(1)+" h" : "—"}</span>
+        <span class="${r.overdueN>0?'warn':''}">${r.overdueN} vencidos</span>
+      </div>
     </div>`;
   }).join("");
 
-  document.getElementById("legendRow").innerHTML = order.map(h => {
-    const n = counts[h];
-    const pct = Math.round(n/total*100);
-    const label = h === "Crítico" ? "Crítico" : h;
-    return `
-    <div class="legend-item">
-      <div class="lname"><span class="legend-dot" style="background:${HEALTH_INFO[h].color}"></span>${label}</div>
-      <div class="lpct">${pct}%</div>
-      <div class="litems">${n} items</div>
-    </div>`;
-  }).join("");
+  // SLA at risk table
+  const atRisk = data.filter(t=>t.sla==="En riesgo"||t.sla==="Vencido").sort((a,b)=> (a.sla==="Vencido"?0:1) - (b.sla==="Vencido"?0:1));
+  document.getElementById("slaAtRiskCount").textContent = atRisk.length + " en la lista";
+  document.getElementById("slaRiskBody").innerHTML = atRisk.length ? atRisk.map(t => `
+    <tr><td>${t.id}</td><td>${t.cat}</td><td>${t.agent}</td><td><span class="badge -${SLA_BADGE[t.sla]}">${t.sla}</span></td></tr>
+  `).join("") : `<tr class="empty-row"><td colspan="4">No hay tickets en riesgo para este filtro.</td></tr>`;
+
+  // Agent load
+  const agents = uniqueValues("agent").filter(a => state.agent==="Todos" || a===state.agent);
+  const agentRows = agents.map(a => {
+    const items = data.filter(t=>t.agent===a);
+    const overdueN = items.filter(t=>t.sla==="Vencido").length;
+    const csatV = items.filter(t=>t.csat!=null).map(t=>t.csat);
+    const avgC = csatV.length ? (csatV.reduce((x,y)=>x+y,0)/csatV.length) : null;
+    return {a, count:items.length, overdueN, avgC};
+  }).filter(r=>r.count>0).sort((a,b)=>b.count-a.count);
+  document.getElementById("agentBody").innerHTML = agentRows.length ? agentRows.map(r => `
+    <tr><td>${r.a}</td><td>${r.count}</td><td>${r.overdueN>0?`<span class="badge -coral">${r.overdueN}</span>`:"0"}</td><td>${r.avgC!=null?r.avgC.toFixed(1)+"/5":"—"}</td></tr>
+  `).join("") : `<tr class="empty-row"><td colspan="4">Sin datos para este filtro.</td></tr>`;
+
+  document.getElementById("filterCount").textContent = `Mostrando ${total} de ${TICKETS.length} tickets`;
 }
 
-function renderBudget(data){
-  const allocated = data.reduce((a,p)=>a+p.allocated,0);
-  const spent = data.reduce((a,p)=>a+p.spent,0);
-  const pct = allocated ? Math.min(100, Math.round(spent/allocated*100)) : 0;
-  document.getElementById("tubeFill").style.width = pct + "%";
-  document.getElementById("spentLbl").textContent = fmtMoneyFull(spent);
-  document.getElementById("allocLbl").textContent = fmtMoneyFull(allocated);
-  document.getElementById("budgetSub").textContent = `Cilindro tubular de gasto (${fmtMoneyShort(spent)} de ${fmtMoneyShort(allocated)})`;
-  const badge = document.getElementById("budgetStatusBadge");
-  if(pct >= 100){ badge.textContent="Sobre costo"; badge.className="badge -crit"; }
-  else if(pct >= 85){ badge.textContent="Cerca del tope"; badge.className="badge -amber"; }
-  else { badge.textContent="Dentro de costo"; badge.className="badge -teal"; }
-}
+function initFilters(){
+  populateSelect("f-dept", uniqueValues("dept"), "Todos");
+  populateSelect("f-agent", uniqueValues("agent"), "Todos");
+  populateSelect("f-cat", CATEGORIES, "Todas");
+  populateSelect("f-status", ["Abierto","En progreso","Resuelto","Vencido"], "Todos");
+  populateSelect("f-priority", ["Alta","Media","Baja"], "Todas");
+  populateSelect("f-channel", uniqueValues("channel"), "Todos");
+  populateSelect("f-sla", ["Cumplido","En riesgo","Vencido"], "Todos");
 
-function renderMilestones(data){
-  const items = data.filter(p => p.milestone).sort((a,b)=> new Date(a.milestone.due)-new Date(b.milestone.due));
-  const el = document.getElementById("milestoneList");
-  el.innerHTML = items.length ? items.map(p => {
-    const cls = p.health === "Crítico" ? "-crit" : p.health === "En riesgo" ? "-amber" : "";
-    const badgeCls = p.health === "Crítico" ? "-crit" : p.health === "En riesgo" ? "-amber" : "-teal";
-    const badgeLabel = p.health === "En riesgo" ? "Riesgo medio" : p.health;
-    return `
-    <div class="list-item ${cls}">
-      <div class="avatar">${initials(p.owner)}</div>
-      <div class="li-body">
-        <div class="li-top"><span class="li-tag">${p.name}</span></div>
-        <div class="li-title">${p.milestone.title}</div>
-        <div class="li-meta">
-          <span>${fmtDate(p.milestone.due)}</span>
-          <span class="badge ${badgeCls}">${badgeLabel}</span>
-        </div>
-      </div>
-    </div>`;
-  }).join("") : `<div class="empty">No hay hitos para este filtro.</div>`;
-}
+  const map = {"f-dept":"dept","f-agent":"agent","f-cat":"cat","f-status":"status","f-priority":"priority","f-channel":"channel","f-sla":"sla"};
+  Object.keys(map).forEach(id => document.getElementById(id).addEventListener("change", e => { state[map[id]] = e.target.value; render(); }));
 
-function riskItemsHtml(items){
-  return items.map(p => {
-    const st = p.riskStatus || "Riesgo medio";
-    const cls = RISK_STATUS_CLASS[st] || "amber";
-    return `
-    <div class="list-item -${cls}">
-      <div class="li-body">
-        <div class="li-top">
-          <span><span class="risk-count-badge">${p.risks} Riesgos</span><span class="li-tag">${p.category}</span></span>
-        </div>
-        <div class="li-title">${p.name}</div>
-        <div class="li-meta">
-          <span class="li-owner">Responsable: ${p.owner}</span>
-          <span class="badge -${cls}">${st.toUpperCase()}</span>
-        </div>
-      </div>
-    </div>`;
-  }).join("");
-}
+  function resetAll(){
+    Object.keys(map).forEach(id => document.getElementById(id).value = document.getElementById(id).options[0].value);
+    state.dept="Todos"; state.agent="Todos"; state.cat="Todas"; state.status="Todos"; state.priority="Todas"; state.channel="Todos"; state.sla="Todos";
+    render();
+  }
+  document.getElementById("resetBtn").addEventListener("click", resetAll);
+  document.getElementById("resetTopBtn").addEventListener("click", resetAll);
 
-function renderRisks(data){
-  const risky = data.filter(p => p.risks > 0).sort((a,b)=>b.risks-a.risks);
-  const totalRisks = data.reduce((a,p)=>a+p.risks,0);
-  document.getElementById("riskCountBadge").textContent = totalRisks + " Registrados";
-  document.getElementById("riskList").innerHTML = risky.length ? riskItemsHtml(risky.slice(0,2)) : `<div class="empty">Sin riesgos activos.</div>`;
-
-  document.getElementById("riskCountSubFull").textContent = `${totalRisks} riesgos abiertos en ${risky.length} proyectos`;
-  document.getElementById("riskListFull").innerHTML = risky.length ? riskItemsHtml(risky) : `<div class="empty">Sin riesgos activos para este filtro.</div>`;
-}
-
-function renderProjectList(data){
-  document.getElementById("projCountSub").textContent = `Mostrando ${data.length} de ${PROJECTS.length} proyectos`;
-  document.getElementById("projectList").innerHTML = data.length ? data.map(p => {
-    const cls = HEALTH_INFO[p.health].cls;
-    return `
-    <div class="proj-row">
-      <div>
-        <div class="proj-name">${p.name}</div>
-        <div class="proj-dept">${p.dept} · ${p.owner}</div>
-      </div>
-      <span class="badge -${cls}">${p.health}</span>
-    </div>`;
-  }).join("") : `<div class="empty">No hay proyectos para este filtro.</div>`;
-}
-
-function renderBudgetList(data){
-  document.getElementById("budgetList").innerHTML = data.length ? data.map(p => {
-    const pct = p.allocated ? Math.round(p.spent/p.allocated*100) : 0;
-    const barColor = pct >= 100 ? "var(--crit)" : pct >= 85 ? "var(--amber)" : "var(--teal)";
-    return `
-    <div class="proj-row" style="flex-direction:column;align-items:stretch;gap:6px;">
-      <div style="display:flex;justify-content:space-between;">
-        <span class="proj-name">${p.name}</span>
-        <span style="font-size:11px;color:var(--text-dim);font-family:var(--mono);">${fmtMoneyShort(p.spent)} / ${fmtMoneyShort(p.allocated)}</span>
-      </div>
-      <div class="tube-wrap" style="height:8px;"><div class="tube-fill" style="width:${Math.min(100,pct)}%;background:${barColor};"></div></div>
-    </div>`;
-  }).join("") : `<div class="empty">No hay proyectos para este filtro.</div>`;
-}
-
-function renderAll(){
-  const data = filtered();
-  renderKPIs(data);
-  renderCylinders(data);
-  renderBudget(data);
-  renderMilestones(data);
-  renderRisks(data);
-  renderProjectList(data);
-  renderBudgetList(data);
+  document.getElementById("syncBtn").addEventListener("click", (e) => {
+    const btn = e.currentTarget;
+    btn.classList.add("-spinning");
+    stampTime();
+    render();
+    setTimeout(()=>btn.classList.remove("-spinning"), 500);
+  });
 }
 
 function stampTime(){
-  const now = new Date();
-  document.getElementById("liveTime").textContent = "En vivo · " + now.toLocaleTimeString("es-AR");
+  document.getElementById("liveLabel").textContent = "En vivo · Sincronizado " + new Date().toLocaleTimeString("es-AR");
 }
 
-function setTab(tab){
-  activeTab = tab;
-  document.querySelectorAll(".view").forEach(v => v.classList.remove("-visible"));
-  document.getElementById("view-"+tab).classList.add("-visible");
-  document.querySelectorAll(".navbtn").forEach(b => b.classList.toggle("-active", b.dataset.tab === tab));
-}
-
-document.querySelectorAll(".navbtn").forEach(btn => btn.addEventListener("click", () => setTab(btn.dataset.tab)));
-document.getElementById("syncBtn").addEventListener("click", (e) => {
-  const btn = e.currentTarget;
-  btn.classList.add("-spinning");
-  stampTime();
-  renderAll();
-  setTimeout(() => btn.classList.remove("-spinning"), 500);
-});
-
-renderFilters();
+initFilters();
 stampTime();
-renderAll();
+render();
 </script>
 </body>
 </html>
